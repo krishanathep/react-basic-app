@@ -1,40 +1,29 @@
 import React from 'react'
 
 class HelloApp extends React.Component {
-	constructor(props) {
-    super(props)
+	constructor() {
+    super()
 
     this.state = {
-    	counter: 0
+        monsters: []
     }
 
-    this.handleClick = this.handleClick.bind(this)
-
-    this.downClick = this.downClick.bind(this)
-
     }
-    
 
-	handleClick() {
-	  this.setState({
-		  counter: this.state.counter + 1
-	  })
-    }
-    downClick() {
-        this.setState({
-            counter: this.state.counter - 1
-        })
+    componentDidMount() {
+        fetch('https://jsonplaceholder.typicode.com/users')
+            .then(response => response.json())
+            //.then(users => console.log(users)
+            .then(users => this.setState({monsters: users}))
     }
 
 	render() {
-		return (
-      <div>
-        <h1>Hello World!</h1>
-        <p>{this.props.message}</p>
-        <button onClick={this.handleClick}>Click Up!</button>
-        <button onClick={this.downClick}>Click Down!</button>
-        <p>Total click : {this.state.counter}</p>
-      </div>
+	    return (
+            <div>
+                {this.state.monsters.map(monster => (
+                    <h2 key={monster.id}>{monster.name}</h2>
+                ))}     
+            </div>
 		)
 	}
 }
